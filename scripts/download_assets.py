@@ -21,9 +21,14 @@ def download_file(url, dest_path):
     print()
 
 def main():
+    # Get the project root directory (parent of scripts directory)
+    project_root = os.path.dirname(os.path.dirname(__file__))
+    
     # Create directories if they don't exist
-    os.makedirs('models', exist_ok=True)
-    os.makedirs('sample_images', exist_ok=True)
+    models_dir = os.path.join(project_root, 'models')
+    sample_images_dir = os.path.join(project_root, 'sample_images')
+    os.makedirs(models_dir, exist_ok=True)
+    os.makedirs(sample_images_dir, exist_ok=True)
     
     # Download YOLOv8n model (nano - smallest)
     model_urls = {
@@ -32,22 +37,28 @@ def main():
     }
     
     for model_name, url in model_urls.items():
-        model_path = Path('models') / model_name
-        print(f"\nDownloading {model_name}...")
-        download_file(url, model_path)
-        print(f"{model_name} downloaded successfully!")
+        model_path = os.path.join(models_dir, model_name)
+        if not os.path.exists(model_path):
+            print(f"\nDownloading {model_name}...")
+            download_file(url, model_path)
+            print(f"{model_name} downloaded successfully!")
+        else:
+            print(f"Model {model_name} already exists, skipping download.")
     
-    # Download sample images
-    sample_images = [
+    # Download sample images if they don't exist
+    sample_image_urls = [
         "https://ultralytics.com/images/zidane.jpg",
         "https://ultralytics.com/images/bus.jpg"
     ]
     
-    for i, url in enumerate(sample_images, 1):
-        filename = Path(url).name
-        dest_path = Path('sample_images') / filename
-        print(f"\nDownloading sample image {i}/{len(sample_images)}: {filename}")
-        download_file(url, dest_path)
+    for i, url in enumerate(sample_image_urls, 1):
+        filename = os.path.basename(url)
+        image_path = os.path.join(sample_images_dir, filename)
+        if not os.path.exists(image_path):
+            print(f"\nDownloading sample image {i}/{len(sample_image_urls)}: {filename}")
+            download_file(url, image_path)
+        else:
+            print(f"Sample image {filename} already exists, skipping download.")
     
     print("\nAll assets downloaded successfully!")
 

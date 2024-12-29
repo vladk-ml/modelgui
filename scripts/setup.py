@@ -33,12 +33,13 @@ def main():
             sys.exit(1)
 
     # Remove existing venv if it exists
-    if os.path.exists("venv"):
+    venv_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "venv")
+    if os.path.exists(venv_dir):
         print("Removing existing virtual environment...")
-        shutil.rmtree("venv")
+        shutil.rmtree(venv_dir)
 
     # Set up paths based on platform
-    venv_path = "venv\\Scripts" if is_windows else "venv/bin"
+    venv_path = os.path.join(venv_dir, "Scripts" if is_windows else "bin")
     python_path = os.path.join(venv_path, "python")
     if is_windows:
         python_path += ".exe"
@@ -49,7 +50,7 @@ def main():
 
     # Create virtual environment
     print("Creating virtual environment...")
-    run_command(f"{python_cmd} -m venv venv")
+    run_command(f"{python_cmd} -m venv {venv_dir}")
 
     # Upgrade pip in the virtual environment
     print("Upgrading pip...")
@@ -57,11 +58,14 @@ def main():
 
     # Install requirements
     print("Installing requirements...")
-    run_command(f'"{python_path}" -m pip install -r requirements.txt')
+    project_root = os.path.dirname(os.path.dirname(__file__))
+    requirements_path = os.path.join(project_root, "requirements.txt")
+    run_command(f'"{python_path}" -m pip install -r "{requirements_path}"')
 
     # Run the download script
     print("Downloading YOLO model and sample images...")
-    run_command(f'"{python_path}" download_assets.py')
+    download_script = os.path.join(os.path.dirname(__file__), "download_assets.py")
+    run_command(f'"{python_path}" "{download_script}"')
 
     print("\nSetup complete!")
     print("\nTo run the application:")
