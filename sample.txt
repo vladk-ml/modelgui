@@ -1,0 +1,6 @@
+This is a sample text file.
+It contains multiple lines of text
+that will be displayed in our GUI application.
+
+You can use this file to test the file selection
+and content display functionality.
