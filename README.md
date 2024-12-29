@@ -1,12 +1,36 @@
 # ModelGUI
 
-A simple GUI application for running YOLO object detection models on images or folders.
+A modern, feature-rich GUI application for running YOLO object detection models on images or folders.
 
 ## Features
-- Select and run YOLO models through an intuitive interface
-- Process single images or entire folders
-- View results with automatic folder opening
-- Timestamped results for easy tracking
+- **Model Management**
+  - Support for multiple YOLO models (nano and small included)
+  - Large model name display
+  - Easy model browsing and selection
+  - Model path tracking
+
+- **File Handling**
+  - Add individual files or entire folders
+  - Support for multiple image formats (jpg, jpeg, png, bmp)
+  - Recursive folder scanning
+  - Duplicate file prevention
+  - Clear file list option
+
+- **Detection Options**
+  - Save Labels (txt files with detections)
+  - Save Confidence scores
+  - Save Cropped detections
+  - Generate analysis plots
+  - Hide/Show labels and confidence scores
+  - Auto-open results option
+
+- **Results & Analysis**
+  - Timestamped results folders
+  - Detection visualization
+  - Confidence distribution plots
+  - Class distribution charts
+  - Confusion matrices
+  - Detailed console output
 
 ## Requirements
 - Python 3.8 or higher
@@ -22,33 +46,36 @@ A simple GUI application for running YOLO object detection models on images or f
 
 2. Run the setup script:
    ```bash
-   python scripts/setup.py
+   cd scripts
+   python setup.py
    ```
 
    This will:
    - Create a virtual environment
    - Install required packages
-   - Download the YOLO model
+   - Download YOLO models (nano and small)
    - Download sample images
 
 3. Run the application:
-
-   **Windows:**
    ```bash
-   venv\Scripts\python main.py
+   yologui.bat    # Windows
    ```
-
-   **macOS/Linux:**
+   or manually:
    ```bash
-   venv/bin/python main.py
+   venv/bin/python main.py    # macOS/Linux
    ```
 
 ## Usage
 1. Select a model from the dropdown menu
-2. Choose an image or folder using the respective buttons
-3. Click "Run Detection" to process
-4. Results will be saved in the `results` folder with timestamps
-5. The results folder will open automatically when complete
+2. Add images using either:
+   - "Add Files" button for individual images
+   - "Add Folder" button for entire directories
+3. Configure detection options:
+   - Choose what to save (labels, crops, plots)
+   - Set visualization preferences
+   - Enable/disable auto-open results
+4. Click "Run Detection" to process
+5. View results in the automatically created timestamped folder
 
 ## Project Structure
 ```
@@ -56,17 +83,36 @@ modelgui/
 ├── main.py              # Main application
 ├── download_assets.py   # Downloads models and sample images
 ├── requirements.txt     # Python dependencies
-├── scripts/            # Setup scripts
-│   └── setup.py        # Cross-platform setup script
+├── scripts/            
+│   ├── setup.py        # Cross-platform setup script
+│   └── yologui.bat     # Windows launcher
 ├── models/             # YOLO model storage
 ├── sample_images/      # Example images
 └── results/            # Detection results (timestamped)
+    └── detection_YYYYMMDD_HHMMSS/
+        ├── labels/     # YOLO format detection files
+        ├── crops/      # Cropped detections
+        └── plots/      # Analysis visualizations
 ```
 
-## Notes
-- Results are saved in timestamped folders for easy tracking
-- Models and sample images are downloaded during setup
-- The virtual environment isolates dependencies
+## Features in Detail
+
+### Detection Options
+- **Save Labels**: Generate YOLO format txt files with detection coordinates
+- **Save Confidence**: Include confidence scores in labels
+- **Save Crops**: Save individual crops of detected objects
+- **Save Plots**: Generate analysis plots
+  - Confidence distribution
+  - Class distribution
+  - Confusion matrix
+- **Hide Labels/Confidence**: Control visualization style
+
+### User Interface
+- Modern dark theme
+- Color-coded buttons for different actions
+- Integrated console output
+- Progress tracking
+- Detailed status updates
 
 ## Contributing
 Feel free to open issues or submit pull requests for improvements!
