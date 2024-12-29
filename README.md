@@ -1,45 +1,72 @@
-# Model GUI
+# ModelGUI
 
-A simple GUI application built with Python and tkinter that allows users to select and read text files. This project serves as a foundation for future AI model integration.
+A simple GUI application for running YOLO object detection models on images or folders.
 
 ## Features
-
-- File selection through a graphical interface
-- Text file content display
-- Error handling and user feedback
-- Clean and intuitive user interface
+- Select and run YOLO models through an intuitive interface
+- Process single images or entire folders
+- View results with automatic folder opening
+- Timestamped results for easy tracking
 
 ## Requirements
+- Python 3.8 or higher
+- Operating System: Windows, macOS, or Linux
 
-- Python 3.x
-- tkinter (usually comes with Python installation)
+## Quick Start
 
-## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/modelgui.git
+   cd modelgui
+   ```
 
-1. Clone this repository:
-```bash
-git clone [your-repo-url]
-```
+2. Run the setup script:
+   ```bash
+   python scripts/setup.py
+   ```
 
-2. Navigate to the project directory:
-```bash
-cd modelgui
-```
+   This will:
+   - Create a virtual environment
+   - Install required packages
+   - Download the YOLO model
+   - Download sample images
 
 3. Run the application:
-```bash
-python gui_app.py
-```
+
+   **Windows:**
+   ```bash
+   venv\Scripts\python main.py
+   ```
+
+   **macOS/Linux:**
+   ```bash
+   venv/bin/python main.py
+   ```
 
 ## Usage
-
-1. Launch the application by running `gui_app.py`
-2. Click the "Select File" button to choose a text file
-3. The contents of the selected file will be displayed in the text area
+1. Select a model from the dropdown menu
+2. Choose an image or folder using the respective buttons
+3. Click "Run Detection" to process
+4. Results will be saved in the `results` folder with timestamps
+5. The results folder will open automatically when complete
 
 ## Project Structure
+```
+modelgui/
+├── main.py              # Main application
+├── download_assets.py   # Downloads models and sample images
+├── requirements.txt     # Python dependencies
+├── scripts/            # Setup scripts
+│   └── setup.py        # Cross-platform setup script
+├── models/             # YOLO model storage
+├── sample_images/      # Example images
+└── results/            # Detection results (timestamped)
+```
 
-- `gui_app.py`: Main GUI application
-- `file_processor.py`: File handling utilities
-- `requirements.txt`: Project dependencies
-- `sample.txt`: Sample text file for testing
+## Notes
+- Results are saved in timestamped folders for easy tracking
+- Models and sample images are downloaded during setup
+- The virtual environment isolates dependencies
+
+## Contributing
+Feel free to open issues or submit pull requests for improvements!

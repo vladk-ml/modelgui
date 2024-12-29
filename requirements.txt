@@ -1,3 +1,3 @@
-# No external dependencies required for basic functionality
-# Built-in libraries used:
-# - tkinter (comes with Python)
+ultralytics
+PyQt5
+Pillow  # for image handling
