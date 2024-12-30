@@ -46,7 +46,7 @@ A modern, feature-rich GUI application for running YOLO object detection models 
 
 2. Run the setup script:
    ```bash
-   cd scripts
+   cd tools
    python setup.py
    ```
 
@@ -58,11 +58,11 @@ A modern, feature-rich GUI application for running YOLO object detection models 
 
 3. Run the application:
    ```bash
-   yologui.bat    # Windows
+   yologui.bat    # Ignore for now
    ```
    or manually:
    ```bash
-   venv/bin/python main.py    # macOS/Linux
+   venv/bin/python main.py    # macOS/Linux/Windows
    ```
 
 ## Usage
@@ -81,10 +81,10 @@ A modern, feature-rich GUI application for running YOLO object detection models 
 ```
 modelgui/
 ├── main.py              # Main application
-├── download_assets.py   # Downloads models and sample images
 ├── requirements.txt     # Python dependencies
-├── scripts/            
+├── tools/            
 │   ├── setup.py        # Cross-platform setup script
+│   ├── download_assets.py   # Downloads models and sample images
 │   └── yologui.bat     # Windows launcher
 ├── models/             # YOLO model storage
 ├── sample_images/      # Example images

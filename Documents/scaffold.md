@@ -49,10 +49,10 @@ ModelGUI is a modern, cross-platform desktop application designed to simplify th
 ```
 modelgui/
 ├── main.py              # Main application and GUI
-├── download_assets.py   # Asset downloader
 ├── requirements.txt     # Dependencies
-├── scripts/            
+├── tools/            
 │   ├── setup.py        # Setup script
+│   ├── download_assets.py   # Asset downloader
 │   └── yologui.bat     # Windows launcher
 ├── models/             # YOLO models
 ├── sample_images/      # Example images
@@ -80,13 +80,13 @@ modelgui/
 - Downloads sample images
 - Creates necessary directories
 
-### `scripts/setup.py`
+### `tools/setup.py`
 - Cross-platform setup
 - Virtual environment creation
 - Dependency installation
 - Asset downloading
 
-### `scripts/yologui.bat`
+### `tools/yologui.bat`
 - Windows launcher script
 - Environment activation
 - Application startup
