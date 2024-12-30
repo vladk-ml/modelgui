@@ -77,6 +77,24 @@ A modern, feature-rich GUI application for running YOLO object detection models 
 4. Click "Run Detection" to process
 5. View results in the automatically created timestamped folder
 
+## Updating
+
+To keep the environment up to date:
+```bash
+cd tools
+python update_env.py
+```
+
+This will:
+- Upgrade pip to the latest version
+- Update all dependencies including YOLO
+- Show the current YOLO version
+- Maintain compatibility with newer models
+
+If you encounter any issues after updating, you can always:
+1. Delete the 'venv' folder
+2. Run setup.py again for a fresh install
+
 ## Project Structure
 ```
 modelgui/
