@@ -1,6 +1,8 @@
 ultralytics
-PyQt5
+PyQt6
 Pillow  # for image handling
 matplotlib  # for plotting
 pandas  # for data analysis
 requests  # for downloading assets
+opencv-python  # for image processing
+torch  # for model inference

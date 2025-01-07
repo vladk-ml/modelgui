@@ -21,3 +21,10 @@ results/
 # OS
 .DS_Store
 Thumbs.db
+
+# PyInstaller
+build/
+dist/
+*.spec
+*.manifest
+*.exe

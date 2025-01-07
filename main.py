@@ -2,13 +2,13 @@ import sys
 import os
 from datetime import datetime
 import time
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                            QPushButton, QFileDialog, QLabel, QComboBox,
                            QProgressBar, QMessageBox, QHBoxLayout, QFrame,
                            QStyle, QSplitter, QListWidget, QCheckBox, QTextEdit,
                            QGridLayout)
-from PyQt5.QtCore import Qt, QSettings, QSize
-from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
+from PyQt6.QtCore import Qt, QSettings, QSize
+from PyQt6.QtGui import QFont, QIcon, QPalette, QColor
 from ultralytics import YOLO
 import glob
 from PIL import Image
@@ -65,8 +65,8 @@ class ModelGUI(QMainWindow):
         
         # Large model name display
         self.model_name_label = QLabel()
-        self.model_name_label.setFont(QFont("Segoe UI", 16, QFont.Bold))
-        self.model_name_label.setAlignment(Qt.AlignCenter)
+        self.model_name_label.setFont(QFont("Segoe UI", 16, QFont.Weight.Bold))
+        self.model_name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.model_name_label.setObjectName("modelNameLabel")
         
         # Model path display
@@ -79,7 +79,7 @@ class ModelGUI(QMainWindow):
         self.model_combo.currentTextChanged.connect(self.updateModelDisplay)  # Then connect the signal
         
         browse_model_btn = QPushButton()
-        browse_model_btn.setIcon(self.style().standardIcon(QStyle.SP_FileDialogStart))
+        browse_model_btn.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogStart))
         browse_model_btn.setText("Browse Model")
         browse_model_btn.setFixedWidth(120)
         browse_model_btn.clicked.connect(self.browseModel)
@@ -110,7 +110,7 @@ class ModelGUI(QMainWindow):
         
         # Add Files button with icon
         add_files_btn = QPushButton()
-        add_files_btn.setIcon(self.style().standardIcon(QStyle.SP_FileIcon))
+        add_files_btn.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileIcon))
         add_files_btn.setText("Add Files")
         add_files_btn.setFixedWidth(120)
         add_files_btn.clicked.connect(self.browseFiles)
@@ -118,7 +118,7 @@ class ModelGUI(QMainWindow):
         
         # Add Folder button with icon
         add_folder_btn = QPushButton()
-        add_folder_btn.setIcon(self.style().standardIcon(QStyle.SP_DirIcon))
+        add_folder_btn.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_DirIcon))
         add_folder_btn.setText("Add Folder")
         add_folder_btn.setFixedWidth(120)
         add_folder_btn.clicked.connect(self.browseFolder)
@@ -130,7 +130,7 @@ class ModelGUI(QMainWindow):
         
         # Clear button with icon
         clear_btn = QPushButton()
-        clear_btn.setIcon(self.style().standardIcon(QStyle.SP_DialogDiscardButton))
+        clear_btn.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogDiscardButton))
         clear_btn.setText("Clear")
         clear_btn.setFixedWidth(100)
         clear_btn.clicked.connect(self.clearFileList)
@@ -203,7 +203,9 @@ class ModelGUI(QMainWindow):
         # Progress and status
         progress_layout = QVBoxLayout()
         self.status_label = QLabel("Ready")
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         self.progress_bar = QProgressBar()
+        self.progress_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.progress_bar.setTextVisible(True)
         progress_layout.addWidget(self.status_label)
         progress_layout.addWidget(self.progress_bar)
@@ -212,18 +214,19 @@ class ModelGUI(QMainWindow):
         run_layout = QHBoxLayout()
         
         run_button_layout = QVBoxLayout()
-        self.run_btn = QPushButton("Run Detection")
-        self.run_btn.setFixedWidth(200)
+        self.run_btn = QPushButton()
+        self.run_btn.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MediaPlay))
+        self.run_btn.setText("Run Detection")
         self.run_btn.clicked.connect(self.run_detection)
         self.run_btn.setObjectName("runButton")
+        self.run_btn.setMinimumWidth(150)
         
-        self.auto_open = QCheckBox("Auto-open Results")
-        self.auto_open.setChecked(True)  # On by default
-        self.auto_open.setToolTip("Automatically open results folder after detection")
+        self.auto_open = QCheckBox("Auto-open results")
+        self.auto_open.setChecked(True)
         
         run_button_layout.addWidget(self.run_btn)
         run_button_layout.addWidget(self.auto_open)
-        run_button_layout.setAlignment(self.auto_open, Qt.AlignCenter)
+        run_button_layout.setAlignment(self.auto_open, Qt.AlignmentFlag.AlignCenter)
         
         run_layout.addStretch()
         run_layout.addLayout(run_button_layout)
@@ -240,21 +243,22 @@ class ModelGUI(QMainWindow):
         self.updateStyleSheet()
 
     def setDarkTheme(self):
-        dark_palette = QPalette()
-        dark_palette.setColor(QPalette.Window, QColor(30, 30, 30))
-        dark_palette.setColor(QPalette.WindowText, Qt.white)
-        dark_palette.setColor(QPalette.Base, QColor(37, 37, 37))
-        dark_palette.setColor(QPalette.AlternateBase, QColor(45, 45, 45))
-        dark_palette.setColor(QPalette.ToolTipBase, Qt.white)
-        dark_palette.setColor(QPalette.ToolTipText, Qt.white)
-        dark_palette.setColor(QPalette.Text, Qt.white)
-        dark_palette.setColor(QPalette.Button, QColor(45, 45, 45))
-        dark_palette.setColor(QPalette.ButtonText, Qt.white)
-        dark_palette.setColor(QPalette.BrightText, Qt.red)
-        dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
-        dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-        dark_palette.setColor(QPalette.HighlightedText, Qt.black)
-        self.setPalette(dark_palette)
+        # Set window background color
+        palette = self.palette()
+        palette.setColor(QPalette.ColorRole.Window, QColor(53, 53, 53))
+        palette.setColor(QPalette.ColorRole.WindowText, QColor(255, 255, 255))
+        palette.setColor(QPalette.ColorRole.Base, QColor(42, 42, 42))
+        palette.setColor(QPalette.ColorRole.AlternateBase, QColor(66, 66, 66))
+        palette.setColor(QPalette.ColorRole.ToolTipBase, QColor(255, 255, 255))
+        palette.setColor(QPalette.ColorRole.ToolTipText, QColor(255, 255, 255))
+        palette.setColor(QPalette.ColorRole.Text, QColor(255, 255, 255))
+        palette.setColor(QPalette.ColorRole.Button, QColor(53, 53, 53))
+        palette.setColor(QPalette.ColorRole.ButtonText, QColor(255, 255, 255))
+        palette.setColor(QPalette.ColorRole.BrightText, QColor(255, 0, 0))
+        palette.setColor(QPalette.ColorRole.Link, QColor(42, 130, 218))
+        palette.setColor(QPalette.ColorRole.Highlight, QColor(42, 130, 218))
+        palette.setColor(QPalette.ColorRole.HighlightedText, QColor(255, 255, 255))
+        self.setPalette(palette)
 
     def updateModelList(self):
         self.model_combo.clear()
@@ -285,41 +289,45 @@ class ModelGUI(QMainWindow):
                 self.model_path_label.setText("No model selected")
 
     def browseModel(self):
-        file_name, _ = QFileDialog.getOpenFileName(
-            self,
-            "Select YOLO Model",
-            self.settings.value('last_model_directory', 'models'),
-            "YOLO Models (*.pt);;All Files (*.*)"
-        )
-        if file_name:
-            self.settings.setValue('last_model_directory', os.path.dirname(file_name))
-            # Add to combo box if not already present
-            if self.model_combo.findText(file_name) == -1:
-                self.model_combo.addItem(file_name)
-            self.model_combo.setCurrentText(file_name)
+        dialog = QFileDialog(self)
+        dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
+        dialog.setNameFilter("Model files (*.pt)")
+        dialog.setDirectory(self.settings.value('last_model_directory', ''))
+        
+        if dialog.exec():
+            selected_files = dialog.selectedFiles()
+            if selected_files:
+                model_path = selected_files[0]
+                # Save the last used directory
+                self.settings.setValue('last_model_directory', os.path.dirname(model_path))
+                
+                # Add to combo box if not already present
+                if self.model_combo.findText(model_path) == -1:
+                    self.model_combo.addItem(model_path)
+                self.model_combo.setCurrentText(model_path)
 
     def browseFiles(self):
         dialog = QFileDialog(self)
-        dialog.setFileMode(QFileDialog.ExistingFiles)
+        dialog.setFileMode(QFileDialog.FileMode.ExistingFiles)
         dialog.setNameFilter("Images (*.jpg *.jpeg *.png *.bmp)")
         dialog.setDirectory(self.settings.value('last_directory', ''))
         
-        if dialog.exec_():
+        if dialog.exec():
             selected_paths = dialog.selectedFiles()
             for path in selected_paths:
-                if self.file_list.findItems(path, Qt.MatchExactly) == []:
+                if self.file_list.findItems(path, Qt.MatchFlag.MatchExactly) == []:
                     self.file_list.addItem(path)
             
-            # Save the last used directory
-            self.settings.setValue('last_directory', os.path.dirname(selected_paths[0]))
+            if selected_paths:
+                self.settings.setValue('last_directory', os.path.dirname(selected_paths[0]))
             self.updateStatus()
 
     def browseFolder(self):
         dialog = QFileDialog(self)
-        dialog.setFileMode(QFileDialog.DirectoryOnly)
+        dialog.setFileMode(QFileDialog.FileMode.Directory)
         dialog.setDirectory(self.settings.value('last_directory', ''))
         
-        if dialog.exec_():
+        if dialog.exec():
             folder_path = dialog.selectedFiles()[0]
             image_files = []
             for ext in ['*.jpg', '*.jpeg', '*.png', '*.bmp']:
@@ -331,18 +339,20 @@ class ModelGUI(QMainWindow):
             
             if not image_files:
                 QMessageBox.warning(self, "No Images Found", 
-                                  f"No image files found in the selected folder:\n{folder_path}")
+                                  f"No image files found in the selected folder:\n{folder_path}",
+                                  QMessageBox.StandardButton.Ok)
                 return
-            
-            # Add only files that aren't already in the list
-            for path in image_files:
-                if self.file_list.findItems(path, Qt.MatchExactly) == []:
-                    self.file_list.addItem(path)
             
             # Save the last used directory
             self.settings.setValue('last_directory', folder_path)
+            
+            # Add files to list if not already present
+            for file_path in image_files:
+                if self.file_list.findItems(file_path, Qt.MatchFlag.MatchExactly) == []:
+                    self.file_list.addItem(file_path)
+            
             self.updateStatus()
-
+            
     def clearFileList(self):
         self.file_list.clear()
         self.updateStatus()
@@ -480,17 +490,19 @@ class ModelGUI(QMainWindow):
         QApplication.processEvents()
 
     def run_detection(self):
-        if self.file_list.count() == 0:
-            QMessageBox.warning(self, "No Files Selected", "Please select image files first.")
+        if not self.file_list.count():
+            QMessageBox.warning(self, "No Files", "Please add some files for detection first.", 
+                              QMessageBox.StandardButton.Ok)
+            return
+        
+        if not self.model_combo.currentText():
+            QMessageBox.warning(self, "No Model", "Please select a model first.", 
+                              QMessageBox.StandardButton.Ok)
             return
         
         try:
             # Load model
             model_name = self.model_combo.currentText()
-            if not model_name:
-                QMessageBox.warning(self, "No Model Selected", "Please select a model first.")
-                return
-            
             self.log_output(f"Loading model: {os.path.basename(model_name)}")
             self.status_label.setText(f"Loading model: {os.path.basename(model_name)}")
             self.model = YOLO(model_name)
@@ -509,11 +521,11 @@ class ModelGUI(QMainWindow):
                 "save_txt": self.save_txt.isChecked(),
                 "save_conf": self.save_conf.isChecked(),
                 "save_crop": self.save_crop.isChecked(),
-                "hide_labels": self.hide_labels.isChecked(),
-                "hide_conf": self.hide_conf.isChecked(),
                 "project": "results",
                 "name": f"detection_{timestamp}",
-                "exist_ok": True  # Overwrite existing results
+                "exist_ok": True,  # Overwrite existing results
+                "show_labels": not self.hide_labels.isChecked(),  # Inverse of hide_labels
+                "show_conf": not self.hide_conf.isChecked()  # Inverse of hide_conf
             }
             
             # Run batch detection
@@ -635,7 +647,7 @@ def main():
     app.setStyle('Fusion')  # Use Fusion style for better dark theme support
     window = ModelGUI()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 if __name__ == "__main__":
     main()
