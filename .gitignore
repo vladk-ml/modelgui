@@ -25,6 +25,5 @@ Thumbs.db
 # PyInstaller
 build/
 dist/
-*.spec
 *.manifest
 *.exe
